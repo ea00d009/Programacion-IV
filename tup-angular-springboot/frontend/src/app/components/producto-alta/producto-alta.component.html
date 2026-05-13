@@ -1,0 +1,15 @@
+<h2>Alta de producto</h2>
+
+<form (ngSubmit)="guardar()">
+  <label>
+    Nombre
+    <input name="nombre" [(ngModel)]="nombre" required />
+  </label>
+
+  <label>
+    Precio
+    <input name="precio" type="number" [(ngModel)]="precio" required min="1" />
+  </label>
+
+  <button type="submit">Guardar</button>
+</form>

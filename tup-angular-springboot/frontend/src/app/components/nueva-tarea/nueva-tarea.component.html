@@ -1,0 +1,10 @@
+<h2>Nueva tarea</h2>
+
+<form (ngSubmit)="enviar()">
+  <label>
+    Título
+    <input name="titulo" [(ngModel)]="titulo" required />
+  </label>
+
+  <button type="submit">Enviar</button>
+</form>
