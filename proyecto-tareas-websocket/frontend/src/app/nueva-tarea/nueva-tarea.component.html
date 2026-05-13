@@ -1,1 +1,8 @@
-<!-- Stub file for nueva-tarea.component.html -->
+<form [formGroup]="tareaForm" (ngSubmit)="enviarTarea()">
+  <input formControlName="descripcion" placeholder="Nueva tarea...">
+  <select formControlName="prioridad">
+    <option value="Alta">Alta</option>
+    <option value="Baja">Baja</option>
+  </select>
+  <button type="submit" [disabled]="tareaForm.invalid">Agregar Tarea</button>
+</form>
