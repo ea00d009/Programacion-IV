@@ -1,1 +1,5 @@
-<!-- Stub file for lista-tareas.component.html -->
+<ul>
+  <li *ngFor="let tarea of (tareaService.escucharTareasVivas() | async)">
+    {{ tarea.descripcion }} - <b>{{ tarea.prioridad }}</b>
+  </li>
+</ul>
