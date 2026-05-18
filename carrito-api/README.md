@@ -1,7 +1,7 @@
 # API de Carrito Profesional
 
 Proyecto correspondiente al Trabajo Práctico de Programación IV - TUP (FADENA).
-**Autor:** Fabricio Alvarez
+**Autores:** Fabricio Alvarez, Agustín Quiroga, Emanuel Ramírez
 
 ## Descripción
 Implementación de un sistema de carrito de compras aplicando arquitectura de capas, manejo global de excepciones con `@ControllerAdvice`, y transaccionalidad.
