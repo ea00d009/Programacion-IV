@@ -1,0 +1,54 @@
+TUP_ Tecnicatura Universitaria en Programación 
+Materia: Programación IV 
+Tema: backend y manejo de errores 
+Docente: Rodolfo Fernando Del Real
+
+Bloque 1: Teoría y Refactorización
+Objetivo: Entender por qué el Controlador no debe calcular totales ni validar stock.
+
+El Problema:
+- Si ponemos la lógica de sumar productos o restar stock en el CarritoController, no podemos reutilizarla en un proceso de "Compra Automática" o "Batch".
+
+La Solución:
+- Service Layer: Creamos ICarritoService para definir las operaciones (agregar ítem, vaciar carrito, checkout).
+
+Lógica Compleja de Negocio:
+- Verificar si el producto existe.
+- Validar que la cantidad solicitada no supere el stock_disponible.
+- Calcular el subtotal (precio * cantidad) y actualizar el total del carrito.
+
+1.1 El Problema de los Controladores "Gordos" (Fat Controllers)
+- Acoplamiento: La lógica queda atada al protocolo HTTP.
+- Dificultad de Testeo: Probar la lógica requiere levantar Spring MVC.
+- Responsabilidad Única (SRP): El controlador debe recibir la petición y devolver la respuesta.
+
+1.2 La Capa de Servicios (Service Layer)
+- Desacoplamiento: Separa la inteligencia de la infraestructura (BD y Web).
+- Coordinación: El servicio interactúa con múltiples repositorios.
+
+Bloque 2: Implementación Práctica
+- Creación de Excepciones Custom: SinStockException, ResourceNotFoundException.
+- Desarrollo del Service: Implementar agregarProducto(Long carritoId, Long productoId, int cantidad).
+
+Bloque 3: Manejo Global con @ControllerAdvice
+- Definir ErrorResponse (mensaje, codigo, timestamp).
+- GlobalExceptionHandler con @ExceptionHandler.
+
+Actividad: DESAFIO EN CLASE
+- Límite de Unidades por Producto (>5): LimiteExcedidoException.
+- Precio <= 0: IllegalArgumentException.
+- Producto activo: boolean activo.
+- Robustez: capturar LimiteExcedidoException (400) y Exception (500).
+
+Configuración H2 (application.properties)
+- spring.h2.console.enabled=true
+- spring.datasource.url=jdbc:h2:mem:carritodb
+- spring.datasource.driverClassName=org.h2.Driver
+- spring.datasource.username=sa
+- spring.datasource.password=
+- spring.jpa.show-sql=true
+
+SQL de carga (data.sql)
+INSERT INTO producto (nombre, precio, stock_disponible, activo) VALUES ('Teclado Mecánico', 5000, 10, true);
+INSERT INTO producto (nombre, precio, stock_disponible, activo) VALUES ('Mouse Gamer', 2500, 0, true);
+INSERT INTO producto (nombre, precio, stock_disponible, activo) VALUES ('Monitor 24', 45000, 5, false);
