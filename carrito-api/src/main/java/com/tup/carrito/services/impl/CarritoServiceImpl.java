@@ -1,5 +1,6 @@
 package com.tup.carrito.services.impl;
 
+import com.tup.carrito.dtos.CarritoDTO;
 import com.tup.carrito.entities.Carrito;
 import com.tup.carrito.entities.ItemCarrito;
 import com.tup.carrito.entities.Producto;
@@ -9,6 +10,7 @@ import com.tup.carrito.exceptions.SinStockException;
 import com.tup.carrito.repositories.CarritoRepository;
 import com.tup.carrito.repositories.ProductoRepository;
 import com.tup.carrito.services.ICarritoService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,9 @@ public class CarritoServiceImpl implements ICarritoService {
     
     @Autowired
     private CarritoRepository carritoRepo;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     @Transactional
@@ -65,5 +70,13 @@ public class CarritoServiceImpl implements ICarritoService {
         carrito.setTotal(carrito.getTotal() + item.getSubtotal());
 
         return carritoRepo.save(carrito);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CarritoDTO obtenerCarritoOptimizado(Long usuarioId) {
+        Carrito carrito = carritoRepo.findCarritoFull(usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el carrito"));
+        return modelMapper.map(carrito, CarritoDTO.class);
     }
 }
